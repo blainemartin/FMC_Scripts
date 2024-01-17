@@ -1,0 +1,36 @@
+Installing Python on Windows
+
+1. Download Python: Visit the official Python website at https://www.python.org/. Navigate to the Downloads section and click on the button that says “Download Python”. This will automatically download the latest version of Python for your operating system.
+2. Install Python: Open the downloaded file to start the installation process. In the first screen of the installation wizard, check the box that says “Add Python to PATH”, then click “Install Now”. This will install Python and set up the necessary environment variables.
+3. Verify Installation: To verify that Python was installed correctly, open a new PowerShell window and type python --version. You should see the Python version that you installed displayed in the console.
+
+Configuring Required Modules
+
+Your script requires the requests and pandas modules. Here’s how to install them:
+1. Open PowerShell: Press Win + R to open the Run dialog, type powershell, and press Enter.
+2. Install Requests: In the PowerShell, type pip install requests and press Enter. This will download and install the requests module, which is used for making HTTP requests.
+3. Install Pandas: Similarly, type pip install pandas and press Enter to install the pandas module, which is used for data manipulation and analysis.
+Now, Python and the necessary modules are installed and ready to use.
+
+Finding the IP Address
+The IP address in the script refers to the IP address of your Cisco Firepower Management Center (FMC). If you’re unsure of what this is, you can usually find it in your network settings or from your network administrator.
+
+Finding the Domain UUID
+The Domain UUID is a unique identifier for a specific domain in your FMC. Here’s how you can find it:
+1. Log in to your FMC.
+2. Navigate to System > Configuration > REST API Preferences.
+3. In the REST API Preferences page, you’ll find a section called Domains. This section lists all the domains along with their UUIDs.
+Using the Python Script
+Here’s a step-by-step guide on how to use the script:
+1. Navigate to the Script’s Directory: Open the folder where you saved the script. Hold down the Shift key and right-click in the folder. Select “Open PowerShell window here” from the context menu.
+2. Run the Script: Type python FMC_Access_Rules_Export.py and press Enter to run the script.
+The script will prompt you to enter your username, password, FMC IP Address, and the Domain UUID. After you provide this information, the script will connect to the Cisco Firepower Management Center and start exporting the access rules associated with the given access policy to an Excel document.
+The script uses a backoff strategy to work around rate limiting on the FMC. If it receives an invalid response, it will implement an incrementing delay before retrying the request. The delay starts at 2 seconds and doubles each time, up to a maximum of 120 seconds. If the invalid response is associated with error 429 (rate limiting), the script will print a message informing you of the delay. For other types of issues, it will print a more generic error message.
+Once the script has finished running, it will create an Excel file named “accessrules.xlsx” in the same directory as the script. This file contains all of the access rules associated with the given access policy.
+
+Additional Details
+* The script requires a network connection which can communicate with the Cisco Firepower Management Center.
+* The script uses the requests module to make HTTP requests and the pandas module to manipulate data and write it to an Excel file.
+* The script handles pagination by retrieving a certain number of rules per request (specified by the limit variable) and updating the offset for the next request.
+* The script retrieves the following details for each rule: name, action, enabled status, source zones, source networks, destination zones, destination networks, and destination ports.
+
